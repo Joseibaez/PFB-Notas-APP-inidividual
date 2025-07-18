@@ -1,0 +1,18 @@
+# Ignorar node_modules en cualquier lugar
+**/node_modules/
+node_modules/
+
+# Archivos de entorno
+**/.env
+.env
+
+# Logs
+*.log
+npm-debug.log*
+
+# Builds
+**/dist/
+**/build/
+
+# Cache
+**/.cache/
