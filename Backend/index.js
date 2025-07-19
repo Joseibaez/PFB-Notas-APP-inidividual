@@ -1,18 +1,20 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-
+import apiRoutes from './src/routes/index.js';
+import notFoundHandler from './src/errors/notFoundHandler.js';
+import errorHandler from './src/errors/errorHandler.js';
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middlewares básicos
-app.use(cors());
-app.use(express.json()); // Para parsear JSON de React
 
-// Ruta básica de health check
+app.use(cors());
+app.use(express.json()); 
+
+// Ruta health check
 app.get('/', (req, res) => {
     res.json({ 
         message: '🚀 API de Notas funcionando',
@@ -21,33 +23,13 @@ app.get('/', (req, res) => {
     });
 });
 
-// TODO: Aquí irán las rutas organizadas
-// app.use('/api/auth', authRoutes);
-// app.use('/api/notas', notasRoutes);
-// app.use('/api/categorias', categoriasRoutes);
+// Rutas API
+app.use('/api', apiRoutes);
 
-// Middleware para rutas no encontradas
-app.use('*', (req, res) => {
-    res.status(404).json({
-        error: 'Endpoint no encontrado',
-        message: `La ruta ${req.originalUrl} no existe`
-    });
-});
+//  rutas no encontradas
+app.use('*', notFoundHandler);
 
-// Middleware global de manejo de errores
-app.use((error, req, res, next) => {
-    console.error('❌ Error:', error);
-    res.status(500).json({
-        error: 'Error interno del servidor',
-        message: error.message
-    });
-});
-
-// Iniciar servidor
-app.listen(PORT, () => {
-    console.log(`🚀 Servidor ejecutándose en http://localhost:${PORT}`);
-    console.log(`📊 Ambiente: ${process.env.NODE_ENV || 'development'}`);
-    console.log(`🗄️  Base de datos: ${process.env.MYSQL_DATABASE}`);
-});
+// Manejador de errores
+app.use(errorHandler);
 
 export default app;

@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import generateErrorsUtils from '../utils/generateErrorsUtils.js';
 
 // Middleware para verificar JWT token
 export const authenticateToken = (req, res, next) => {
@@ -8,19 +9,13 @@ export const authenticateToken = (req, res, next) => {
         const token = authHeader && authHeader.split(' ')[1]; // Formato : "Bearer TOKEN"
 
         if (!token) {
-            return res.status(401).json({
-                success: false,
-                message: 'Token de acceso requerido'
-            });
+            return next(generateErrorsUtils('Token de acceso requerido', 401));
         }
 
         // Verificar el token
         jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
             if (err) {
-                return res.status(403).json({
-                    success: false,
-                    message: 'Token inválido o expirado'
-                });
+                return next(generateErrorsUtils('Token inválido o expirado', 403));
             }
 
             // Añadir el userId a la request para uso posterior
@@ -29,15 +24,11 @@ export const authenticateToken = (req, res, next) => {
         });
 
     } catch (error) {
-        console.error('Error en authenticateToken:', error);
-        res.status(500).json({
-            success: false,
-            message: 'Error interno del servidor'
-        });
+        next(error); // Pasar al errorHandler
     }
 };
 
-//  Para las rutas que pueden ser públicas o privadas
+// Para las rutas que pueden ser públicas o privadas
 export const optionalAuth = (req, res, next) => {
     try {
         const authHeader = req.headers['authorization'];
@@ -62,7 +53,7 @@ export const optionalAuth = (req, res, next) => {
         });
 
     } catch (error) {
-        console.error('Error en optionalAuth:', error);
+        // En optionalAuth, los errores no deben cortar el flujo
         req.userId = null;
         next();
     }

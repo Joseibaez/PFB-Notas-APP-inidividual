@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { validationResult } from 'express-validator';
 import getPool from '../database/getPool.js';
+import generateErrorsUtils from '../utils/generateErrorsUtils.js';
 
 // Función para generar JWT token
 const generateToken = (userId) => {
@@ -13,16 +14,15 @@ const generateToken = (userId) => {
 };
 
 // REGISTRO DE USUARIO
-export const register = async (req, res) => {
+export const register = async (req, res, next) => {
     try {
         // Verificar errores de validación
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({
-                success: false,
-                message: 'Datos de entrada inválidos',
-                errors: errors.array()
-            });
+            const validationError = new Error('Datos de entrada inválidos');
+            validationError.type = 'validation';
+            validationError.errors = errors.array();
+            throw validationError;
         }
 
         const { email, password } = req.body;
@@ -35,10 +35,7 @@ export const register = async (req, res) => {
         );
 
         if (existingUser.length > 0) {
-            return res.status(409).json({
-                success: false,
-                message: 'El email ya está registrado'
-            });
+            throw generateErrorsUtils('El email ya está registrado', 409);
         }
 
         // Hashear la contraseña
@@ -69,25 +66,20 @@ export const register = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Error en register:', error);
-        res.status(500).json({
-            success: false,
-            message: 'Error interno del servidor'
-        });
+        next(error); 
     }
 };
 
 // LOGIN DE USUARIO
-export const login = async (req, res) => {
+export const login = async (req, res, next) => {
     try {
         // Verificar errores de validación
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({
-                success: false,
-                message: 'Datos de entrada inválidos',
-                errors: errors.array()
-            });
+            const validationError = new Error('Datos de entrada inválidos');
+            validationError.type = 'validation';
+            validationError.errors = errors.array();
+            throw validationError;
         }
 
         const { email, password } = req.body;
@@ -100,10 +92,7 @@ export const login = async (req, res) => {
         );
 
         if (users.length === 0) {
-            return res.status(401).json({
-                success: false,
-                message: 'Credenciales inválidas'
-            });
+            throw generateErrorsUtils('Credenciales inválidas', 401);
         }
 
         const user = users[0];
@@ -112,10 +101,7 @@ export const login = async (req, res) => {
         const isPasswordValid = await bcrypt.compare(password, user.password);
 
         if (!isPasswordValid) {
-            return res.status(401).json({
-                success: false,
-                message: 'Credenciales inválidas'
-            });
+            throw generateErrorsUtils('Credenciales inválidas', 401);
         }
 
         // Generar token JWT
@@ -135,16 +121,12 @@ export const login = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Error en login:', error);
-        res.status(500).json({
-            success: false,
-            message: 'Error interno del servidor'
-        });
+        next(error); // Pasar al errorHandler
     }
 };
 
 // VERIFICAR TOKEN (para rutas protegidas)
-export const verifyToken = async (req, res) => {
+export const verifyToken = async (req, res, next) => {
     try {
         // El middleware auth ya verificó el token y añadió req.userId
         const pool = await getPool();
@@ -155,10 +137,7 @@ export const verifyToken = async (req, res) => {
         );
 
         if (users.length === 0) {
-            return res.status(404).json({
-                success: false,
-                message: 'Usuario no encontrado'
-            });
+            throw generateErrorsUtils('Usuario no encontrado', 404);
         }
 
         res.json({
@@ -170,10 +149,6 @@ export const verifyToken = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Error en verifyToken:', error);
-        res.status(500).json({
-            success: false,
-            message: 'Error interno del servidor'
-        });
+        next(error); 
     }
 };
