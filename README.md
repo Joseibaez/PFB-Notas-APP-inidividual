@@ -165,16 +165,6 @@ He preparado una colección completa de Postman con todos los endpoints de la AP
 3. Ejecuta los requests en orden o usa "Run Collection"
 4. Los tokens JWT se configuran automáticamente tras el login
 
-### 🖥️ Verificar Backend (Terminal)
-```bash
-# Health check
-curl http://localhost:3000/
-
-# Login de prueba
-curl -X POST http://localhost:3000/api/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"email":"test@notas.com","password":"test123456"}'
-
 ## 📱 Cómo Usar la Aplicación
 
 ### 1. Acceso Inicial
