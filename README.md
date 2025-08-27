@@ -142,6 +142,29 @@ La aplicación incluye un usuario de prueba con notas de ejemplo ya creadas:
 - Distribuidas en diferentes categorías
 - Listas para probar todas las funcionalidades
 
+## 🧪 Testing y Verificación
+
+### 📡 Colección de Postman (Recomendado)
+
+**🚀 Prueba completa de la API con un click:**
+
+He preparado una colección completa de Postman con todos los endpoints de la API listos para probar. La colección incluye:
+
+- ✅ **Health Check** del servidor
+- 🔐 **Autenticación** (login/register/verify)  
+- 📝 **CRUD completo de notas** (crear, listar, ver, editar, eliminar)
+- 🏷️ **Gestión de categorías**
+- 🌐 **Notas públicas**
+- 🔄 **Variables automáticas** (token JWT se guarda automáticamente)
+
+**🔗 Enlace a la colección:** [Postman Collection - API Notas](https://lddcdvc.postman.co/workspace/lddcdvc's-Workspace~bd769607-7b08-459f-86e9-50515cfc9d25/collection/43839176-8ace7e51-0ff0-484d-a55b-3b4d80c16f83?action=share&creator=43839176)
+
+**📋 Instrucciones:**
+1. Abre el enlace en Postman
+2. Asegúrate de que el backend esté ejecutándose (`npm run dev`)
+3. Ejecuta los requests en orden o usa "Run Collection"
+4. Los tokens JWT se configuran automáticamente tras el login
+
 ## 📱 Cómo Usar la Aplicación
 
 ### 1. Acceso Inicial
