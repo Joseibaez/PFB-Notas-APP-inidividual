@@ -17,7 +17,7 @@ export function AuthProvider({ children }) {
       
       if (savedToken) {
         try {
-          const response = await fetch('http://localhost:3000/api/auth/verify', {
+          const response = await fetch('https://jcuhp5efnm.us-east-1.awsapprunner.com/auth/verify', {
             headers: {
               'Authorization': `Bearer ${savedToken}`
             }
@@ -50,7 +50,7 @@ export function AuthProvider({ children }) {
   // Función de login
   const login = async (email, password) => {
     try {
-      const response = await fetch('http://localhost:3000/api/auth/login', {
+      const response = await fetch('https://jcuhp5efnm.us-east-1.awsapprunner.com/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -85,7 +85,7 @@ export function AuthProvider({ children }) {
   // Función de registro
   const register = async (email, password) => {
     try {
-      const response = await fetch('http://localhost:3000/api/auth/register', {
+      const response = await fetch('https://jcuhp5efnm.us-east-1.awsapprunner.com/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

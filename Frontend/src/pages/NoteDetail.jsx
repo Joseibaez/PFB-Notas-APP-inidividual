@@ -16,7 +16,7 @@ export default function NoteDetail() {
   useEffect(() => {
     const fetchNote = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/notas/${id}`, {
+        const response = await fetch(`https://jcuhp5efnm.us-east-1.awsapprunner.com/api/notas/${id}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -47,7 +47,7 @@ export default function NoteDetail() {
     setDeleting(true);
     
     try {
-      const response = await fetch(`http://localhost:3000/api/notas/${id}`, {
+      const response = await fetch(`https://jcuhp5efnm.us-east-1.awsapprunner.com/api/notas/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -77,7 +77,7 @@ export default function NoteDetail() {
 
   const togglePublic = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/notas/${id}/toggle-public`, {
+      const response = await fetch(`https://jcuhp5efnm.us-east-1.awsapprunner.com/api/notas/${id}/toggle-public`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,

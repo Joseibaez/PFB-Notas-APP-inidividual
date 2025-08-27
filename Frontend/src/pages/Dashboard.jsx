@@ -12,7 +12,7 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchNotes = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/notas', {
+        const response = await fetch('https://jcuhp5efnm.us-east-1.awsapprunner.com/api/notas', {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'

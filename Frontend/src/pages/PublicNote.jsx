@@ -10,7 +10,7 @@ export default function PublicNote() {
   useEffect(() => {
     const fetchPublicNote = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/notas/public/${id}`);
+        const response = await fetch(`https://jcuhp5efnm.us-east-1.awsapprunner.com/api/notas/public/${id}`);
         const data = await response.json();
 
         if (data.success) {

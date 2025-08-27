@@ -25,7 +25,7 @@ export default function NoteForm() {
   useEffect(() => {
     const fetchCategorias = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/categorias');
+        const response = await fetch('https://jcuhp5efnm.us-east-1.awsapprunner.com/api/categorias');
         const data = await response.json();
         
         if (data.success) {
@@ -48,7 +48,7 @@ export default function NoteForm() {
     if (isEditing && token) {
       const fetchNote = async () => {
         try {
-          const response = await fetch(`http://localhost:3000/api/notas/${id}`, {
+          const response = await fetch(`https://jcuhp5efnm.us-east-1.awsapprunner.com/api/notas/${id}`, {
             headers: {
               'Authorization': `Bearer ${token}`,
               'Content-Type': 'application/json'
@@ -105,8 +105,8 @@ export default function NoteForm() {
 
     try {
       const url = isEditing 
-        ? `http://localhost:3000/api/notas/${id}`
-        : 'http://localhost:3000/api/notas';
+        ? `https://jcuhp5efnm.us-east-1.awsapprunner.com/api/notas/${id}`
+        : 'https://jcuhp5efnm.us-east-1.awsapprunner.com/api/notas';
       
       const method = isEditing ? 'PUT' : 'POST';
 
